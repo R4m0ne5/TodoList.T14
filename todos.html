@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Afazeres</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        .table-striped {
+            color: green;
+            border-collapse: collapse;
+        }
+
+        table {
+            margin-top: 20px;
+            overflow: scroll;
+        }
+
+        th {
+            padding: 10px;
+            width: 350px;
+            text-align: center;
+             font-weight: bold;
+        }
+        td {
+            padding: 10px;
+            width: 350px;
+            text-align: center;
+        }
+
+        th:first-child, td:first-child {
+            width: 50px; 
+        }
+        th:last-child, td:last-child {
+            width: 25px; 
+        }
+
+
+        tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        input {
+            border: 1.5px solid black;
+            height: 25px;
+            width: 380px;
+            border-radius: 8px;
+            transition: background-color 0.3s; 
+        }
+
+
+        input:hover {
+            background-color: #e0e0e0;
+        }
+
+        .button-add {
+            border: 1.5px solid black;
+            height: 30px;
+            width: 90px;
+            background-color: lightgreen;
+            border-radius: 8px;
+            transition: background-color 0.3s; 
+            cursor: pointer;
+        }
+
+
+        .button-add:hover {
+            background-color: #32CD32;
+        }
+        
+        .delete-icon {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .delete-icon svg {
+            fill: red;
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To do List</h1>
+    <div class="input-section">
+        <input type="text" id="taskInput" placeholder=" Digite uma tarefa">
+        <button class="button-add" onclick="addTask()">Adicionar</button>
+    </div>
+    <div>
+        <table class="table table-striped" id="taskTable">
+            <tr>
+                <th>Nº</th>
+                <th>Descrição</th>
+                <th></th> 
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let taskCount = 0;
+
+        function addTask() {
+            const taskInput = document.querySelector("#taskInput");
+            const taskTable = document.getElementById("taskTable");
+            
+            if (taskInput.value.trim() === "") return;
+
+            taskCount++;
+
+            const newRow = taskTable.insertRow();
+            
+            newRow.insertCell(0).textContent = taskCount; 
+            newRow.insertCell(1).textContent = taskInput.value; 
+
+            const deleteIcon = document.createElement("span");
+            deleteIcon.className = "delete-icon";
+            deleteIcon.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                </svg>
+            `;
+            deleteIcon.onclick = () => taskTable.deleteRow(newRow.rowIndex);
+            
+            newRow.insertCell(2).appendChild(deleteIcon);
+            
+            // Limpa o campo de entrada
+            taskInput.value = "";
+        }
+    </script>
+</body>
+</html>
